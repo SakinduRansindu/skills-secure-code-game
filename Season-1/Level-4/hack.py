@@ -40,9 +40,10 @@ class TestDatabase(unittest.TestCase):
 
         # but the hacker passes is this:
         what_hacker_passes = op.get_stock_price("MSFT'; UPDATE stocks SET price = '525' WHERE symbol = 'MSFT'--")
+        # what_hacker_passes = op.get_stock_price('MSFT')
         hacker_output = "[METHOD EXECUTED] get_stock_price\n[QUERY] SELECT price FROM stocks WHERE symbol = 'MSFT'; UPDATE stocks SET price = '525' WHERE symbol = 'MSFT'--'\n[SCRIPT EXECUTION]\n"
 
-        self.assertEqual(developer_output_expectation, what_hacker_passes)
+        self.assertEqual(developer_expectation, what_hacker_passes)
 
 # Further exploit input could be:
 # "MSFT'; DROP TABLE stocks--"

@@ -13,6 +13,19 @@ def source():
     TaxPayer('foo', 'bar').get_prof_picture(request.args["input"])
 ### Unrelated to the exercise -- Ends here -- Please ignore
 
+def safe_path(path):
+    blocked = ['/etc/passwd']
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    filepath = os.path.normpath(os.path.join(base_dir, path))
+    print("filepath",filepath)
+    for b in blocked:
+        if filepath.startswith(b):
+            print("Etc/passwd")
+            return None
+    if base_dir != os.path.commonpath([base_dir, filepath]):
+        return None
+    return filepath
+
 class TaxPayer:
 
     def __init__(self, username, password):
@@ -35,6 +48,9 @@ class TaxPayer:
         base_dir = os.path.dirname(os.path.abspath(__file__))
         prof_picture_path = os.path.normpath(os.path.join(base_dir, path))
 
+        path = safe_path(path)
+        if path==None:
+            return None
         with open(prof_picture_path, 'rb') as pic:
             picture = bytearray(pic.read())
 
@@ -44,12 +60,15 @@ class TaxPayer:
     # returns the path of an attached tax form that every user should submit
     def get_tax_form_attachment(self, path=None):
         tax_data = None
-
         if not path:
             raise Exception("Error: Tax form is required for all users")
 
+        path = safe_path(path)
+        if path==None:
+            return None
+        print("sf",path)
         with open(path, 'rb') as form:
             tax_data = bytearray(form.read())
 
         # assume that tax data is returned on screen after this
-        return path
+        return tax_data

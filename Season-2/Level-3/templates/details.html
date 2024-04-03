@@ -24,7 +24,10 @@
     <br/>
     <p>Search in Google for more information about the planet: <span id="planet"/></p>
     <script>
-        document.getElementById("planet").innerHTML = document.getElementById("name").textContent;
+        const escapeHtml = (unsafe) => {
+                    return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+                }   
+        document.getElementById("planet").innerHTML = escapeHtml(document.getElementById("name").textContent);
     </script>
 </body>
 

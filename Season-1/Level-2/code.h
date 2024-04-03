@@ -40,9 +40,9 @@ typedef struct {
 user_account *accounts[MAX_USERS];
 
 // The signatures of the following four functions together with the previously introduced 
+
 // constants (see #DEFINEs) constitute the API of this module
 
-// Creates a new user account and returns it's unique identifier
 int create_user_account(bool isAdmin, const char *username) {
     if (userid_next >= MAX_USERS) {
         fprintf(stderr, "the maximum number of users have been exceeded");
@@ -80,7 +80,8 @@ bool update_setting(int user_id, const char *index, const char *value) {
         return false;
 
     v = strtol(value, &endptr, 10);
-    if (*endptr || i >= SETTINGS_COUNT)
+    // FIX: We should check for negative index values too! Scroll for the full solution
+    if (*endptr || i < 0 || i >= SETTINGS_COUNT)
         return false;
     accounts[user_id]->setting[i] = v;
     return true;
